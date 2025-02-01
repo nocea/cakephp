@@ -1,7 +1,7 @@
 <?php
 class MeserosController extends AppController{
     //Facilita el uso de Html Formularios,ajax,javascript...
-    public $helpers= array('Html','Form');
+    public $helpers= array('Html','Form','Time');
     public $component=array('Flash');
     public function index(){
         //Trae todos los registros de la tabla meseros a una lista.
@@ -40,6 +40,43 @@ class MeserosController extends AppController{
             }
             //si no se guarda correctamente
             $this->Flash->error('No se ha creado el mesero');
+        }
+    }
+    /**
+     * Editar Meseros
+     */
+    public function editar($id=null){
+        //Si no se encuentra el id
+        if(!$id){
+            throw new NotFoundException("No se ha mandado un ID,Datos invalidos");
+        }
+        $mesero=$this ->Mesero->findById($id);//busca y guarda el mesero por su id
+        //si no se encuentra el mesero por su id
+        if(!$mesero){
+            throw new NotFoundException("El mesero no existe");
+        }
+        //cuando entra aqui y hay un post/put
+        if($this->request->is(array('post','put'))){
+            $this->Mesero->id=$id;//pasa el mesero a la vista
+            if($this->Mesero->save($this->request->data)){
+                $this->Flash->success('Se ha modificado el mesero');//mensaje de exito
+                return $this->redirect(array('action' => 'index'));//vuelve al index
+            }
+            $this->Flash->error('No se pudo modificar el mesero');
+        }
+        //Con esto facilitamos que en el formulario de edición aparezcan los datos del mesero.
+        if(!$this->request->data){
+            $this->request->data=$mesero;
+        }
+    }
+    public function eliminar($id=null){
+        //Esto es para que no se pueda eliminar por la url->meseros/eliminar/id
+        if($this->request->is('get')){
+            throw new MethodNotAllowedException('Incorrecto');
+        }
+        if($this->Mesero->delete($id)){
+            $this->Flash->success('Se ha eliminado el mesero');//mensaje de exito
+            return $this->redirect(array('action' => 'index'));//vuelve al index
         }
     }
 }

@@ -15,7 +15,9 @@
             <td>id</td>
             <td>nombre</td>
             <td>apellidos</td>
-            <td>acciones</td>
+            <td>Datos</td>
+            <td>Editar</td>
+            <td>Eliminar</td>
         </tr>
    
     <?php
@@ -26,11 +28,10 @@
             <td><?php echo $mesero['Mesero']['id']?></td>
             <td><?php echo $mesero['Mesero']['nombre']?></td>
             <td><?php echo $mesero['Mesero']['apellido']?></td>
-            <td><?php 
-            //Enlace a una función para enseñar todos los datos de los meseros.
-
-            echo $this->Html->link('Datos Meseros',array('controller'=>'meseros','action'=>'ver',$mesero['Mesero']['id']));
-            ?></td>
+            <td><?php echo $this->Html->link('Datos Meseros',array('controller'=>'meseros','action'=>'ver',$mesero['Mesero']['id']));?></td>
+            <td><?php echo $this->Html->link('Editar Datos',array('controller'=>'meseros','action'=>'editar',$mesero['Mesero']['id']));?></td>
+            <td><?php echo $this->Form->postLink('Eliminar',array('action'=>'eliminar',$mesero['Mesero']['id']),array('confirm'=>'Eliminar a '.$mesero['Mesero']['nombre'].'?'))?></td>
+            
         </tr>
     <?php
         endforeach;

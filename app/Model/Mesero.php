@@ -9,6 +9,10 @@ class Mesero extends AppModel{
             'numeric'=>array(
                 'rule'=>'numeric',
                 'message'=>'Solo Números'
+            ),
+            'unique'=>array(
+                'rule'=>'isUnique',
+                'message'=>'Este dni ya existe en nuestra base de datos'
             )
         ),
         'nombre'=>array(

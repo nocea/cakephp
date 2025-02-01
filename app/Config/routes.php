@@ -25,7 +25,9 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+//esto se puede modificar para que cualquier vista sea la principal(indicando controlador y vista del mismo)
+	Router::connect('/', array('controller' => 'meseros', 'action' => 'index'));
+
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
