@@ -1,11 +1,37 @@
 <?php
 class MeserosController extends AppController{
     //Facilita el uso de Html Formularios,ajax,javascript...
-    public $helpers= array('Html','Form','Time');
-    public $component=array('Flash');
+    public $helpers= array('Html','Form','Time','Js');
+    public $component=array('Flash', 'RequestHandler');
+    public $paginate = array(
+        'limit' => 5,
+        'order' => array(
+            'Mesero.id' => 'asc'
+        )
+    );
+    public function search() {
+        $this->autoRender = false; // No usa una vista
+    
+        if ($this->request->is('ajax')) {
+            $query = $this->request->query['q']; // Captura la búsqueda del usuario
+    
+            $meseros = $this->Mesero->find('all', array(
+                'conditions' => array(
+                    'Mesero.nombre LIKE' => '%' . $query . '%'
+                ),
+                'fields' => array('Mesero.id', 'Mesero.nombre'),
+                'limit' => 10
+            ));
+    
+            echo json_encode($meseros);
+        }
+    }
+    
     public function index(){
+        $this->Mesero->recursive = 0;
         //Trae todos los registros de la tabla meseros a una lista.
-        $this->set('meseros',$this->Mesero->find('all'));
+        $this->paginate['Mesero']['order'] = array('Mesero.id' => 'asc');
+        $this->set('meseros', $this->paginate());
     }
     /**
      * Ver todos los datos de un mesero
